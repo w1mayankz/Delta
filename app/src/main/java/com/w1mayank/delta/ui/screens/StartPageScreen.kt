@@ -16,20 +16,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Haze Liquid Glass Imports
+// Fixed Haze Imports
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.ExperimentalHazeMaterials
 import dev.chrisbanes.haze.materials.HazeMaterials
+import dev.chrisbanes.haze.ExperimentalHazeApi
 
-// Your Custom UI Components
 import com.w1mayank.delta.ui.components.bounceClick
-import com.w1mayank.delta.ui.components.CustomizeMenu
 import com.w1mayank.delta.ui.components.CupertinoIcon
 import com.w1mayank.delta.ui.theme.InterFont
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeMaterials::class)
+// FIX: Removed the missing CustomizeMenu import and updated the OptIn
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeApi::class)
 @Composable
 fun StartPageScreen(hazeState: HazeState) {
     val textColor = Color(0xFF1A1A1A)
@@ -40,7 +39,6 @@ fun StartPageScreen(hazeState: HazeState) {
 
     Box(modifier = Modifier.fillMaxSize().background(bgColor)) {
         
-        // 1. Scrollable Content (Source of the pixels for the glass)
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -52,7 +50,6 @@ fun StartPageScreen(hazeState: HazeState) {
             item {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        // Cupertino Favorites Icon
                         CupertinoIcon(hexCode = "\uF47D", contentDescription = "Favorites", tint = textColor, size = 24.sp)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Favorites", fontFamily = InterFont, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = textColor)
@@ -66,7 +63,7 @@ fun StartPageScreen(hazeState: HazeState) {
                                 Box(
                                     modifier = Modifier
                                         .size(70.dp)
-                                        .bounceClick { } // Fixed container squish
+                                        .bounceClick { } 
                                         .clip(RoundedCornerShape(16.dp))
                                         .hazeChild(state = hazeState, style = HazeMaterials.thin()),
                                     contentAlignment = Alignment.Center
@@ -95,7 +92,6 @@ fun StartPageScreen(hazeState: HazeState) {
                             .padding(16.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            // Cupertino Privacy Shield Icon
                             CupertinoIcon(hexCode = "\uF4B2", contentDescription = "Privacy", tint = textColor, size = 24.sp)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("135", fontFamily = InterFont, fontSize = 24.sp, fontWeight = FontWeight.Medium, color = textColor)
@@ -140,7 +136,6 @@ fun StartPageScreen(hazeState: HazeState) {
             }
         }
 
-        // 2. The True Top Blur Fade
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -150,7 +145,6 @@ fun StartPageScreen(hazeState: HazeState) {
                 .background(Brush.verticalGradient(listOf(bgColor, bgColor.copy(alpha = 0.8f), Color.Transparent)))
         )
 
-        // 3. The True Bottom Blur Fade (Height Increased)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -160,27 +154,30 @@ fun StartPageScreen(hazeState: HazeState) {
                 .background(Brush.verticalGradient(listOf(Color.Transparent, bgColor.copy(alpha = 0.8f), bgColor)))
         )
 
+        // FIX: Temporary placeholder block until we actually build the Customize Menu file
         if (showBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState,
-                containerColor = Color.Transparent,
+                containerColor = Color(0xFFF2F2F7),
                 dragHandle = null
             ) {
-                CustomizeMenu(onDismiss = { showBottomSheet = false })
+                Box(modifier = Modifier.fillMaxWidth().height(200.dp).padding(24.dp), contentAlignment = Alignment.Center) {
+                    Text("Customize Menu (To be built!)", fontFamily = InterFont, color = Color.Black, fontWeight = FontWeight.SemiBold)
+                }
             }
         }
     }
 }
 
-@OptIn(ExperimentalHazeMaterials::class)
+@OptIn(ExperimentalHazeApi::class)
 @Composable
 fun ArticleCard(letter: String, title: String, domain: String, hazeState: HazeState) {
     val textColor = Color(0xFF1A1A1A)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .bounceClick { } // Container Squish
+            .bounceClick { } 
             .clip(RoundedCornerShape(20.dp))
             .hazeChild(state = hazeState, style = HazeMaterials.thin())
             .padding(12.dp),
