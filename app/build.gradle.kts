@@ -47,7 +47,4 @@ dependencies {
     // The True Liquid Glass Engines
     implementation("dev.chrisbanes.haze:haze:1.1.1")
     implementation("dev.chrisbanes.haze:haze-materials:1.1.1")
-    
-    // Feather Icons (1:1 Apple Thin Line Match)
-    implementation("br.com.devsrsouza.compose.icons:feather:1.1.1")
 }
