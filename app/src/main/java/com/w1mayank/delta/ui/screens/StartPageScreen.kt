@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,28 +36,26 @@ fun StartPageScreen(backgroundHazeState: HazeState, contentHazeState: HazeState)
 
     Box(modifier = Modifier.fillMaxSize()) {
         
-        // --- LAYER 1: THE WALLPAPER ---
-        // This generates the pixels for the inner cards to blur
+        // Background Wallpaper Engine
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .haze(state = backgroundHazeState)
-                .background(bgColor) // Later, you can swap this for an Image() component!
+                .background(bgColor) 
         )
         
-        // --- LAYER 2: THE SCROLLING CONTENT ---
-        // This generates the pixels for the top/bottom fades and Nav Bar to blur
+        // Scrolling Content Engine
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .haze(state = contentHazeState),
-            contentPadding = PaddingValues(top = 100.dp, bottom = 180.dp, start = 20.dp, end = 20.dp),
+            contentPadding = PaddingValues(top = 60.dp, bottom = 120.dp, start = 20.dp, end = 20.dp),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             item {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        CupertinoIcon(hexCode = "\uF47D", contentDescription = "Favorites", tint = textColor, size = 24.sp)
+                        CupertinoIcon(hexCode = "\uF47D", contentDescription = "Favorites", tint = textColor, size = 28.sp)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Favorites", fontFamily = InterFont, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = textColor)
                     }
@@ -73,7 +70,7 @@ fun StartPageScreen(backgroundHazeState: HazeState, contentHazeState: HazeState)
                                         .size(70.dp)
                                         .bounceClick { } 
                                         .clip(RoundedCornerShape(16.dp))
-                                        .hazeChild(state = backgroundHazeState, style = HazeMaterials.thin()), // Uses Background Engine
+                                        .hazeChild(state = backgroundHazeState, style = HazeMaterials.thin()), 
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(letters[i], fontFamily = InterFont, fontSize = 32.sp, fontWeight = FontWeight.Normal, color = Color.White)
@@ -95,11 +92,11 @@ fun StartPageScreen(backgroundHazeState: HazeState, contentHazeState: HazeState)
                             .fillMaxWidth()
                             .bounceClick { }
                             .clip(RoundedCornerShape(20.dp))
-                            .hazeChild(state = backgroundHazeState, style = HazeMaterials.thin()) // Uses Background Engine
+                            .hazeChild(state = backgroundHazeState, style = HazeMaterials.thin()) 
                             .padding(16.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            CupertinoIcon(hexCode = "\uF4B2", contentDescription = "Privacy", tint = textColor, size = 24.sp)
+                            CupertinoIcon(hexCode = "\uF4B2", contentDescription = "Privacy", tint = textColor, size = 28.sp)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("135", fontFamily = InterFont, fontSize = 24.sp, fontWeight = FontWeight.Medium, color = textColor)
                             Spacer(modifier = Modifier.width(16.dp))
@@ -139,27 +136,12 @@ fun StartPageScreen(backgroundHazeState: HazeState, contentHazeState: HazeState)
                     }
                 }
             }
+            
+            // Invisible spacer at the bottom so you can scroll the very last item up past the Search bar
+            item {
+                Spacer(modifier = Modifier.height(80.dp))
+            }
         }
-
-        // --- LAYER 3: OVERLAYS ---
-        // Uses Content Engine to blur the scrolling cards underneath
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .align(Alignment.TopCenter)
-                .hazeChild(state = contentHazeState, style = HazeMaterials.regular())
-                .background(Brush.verticalGradient(listOf(bgColor, bgColor.copy(alpha = 0.8f), Color.Transparent)))
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(180.dp)
-                .align(Alignment.BottomCenter)
-                .hazeChild(state = contentHazeState, style = HazeMaterials.regular())
-                .background(Brush.verticalGradient(listOf(Color.Transparent, bgColor.copy(alpha = 0.8f), bgColor)))
-        )
 
         if (showBottomSheet) {
             ModalBottomSheet(
@@ -185,7 +167,7 @@ fun ArticleCard(letter: String, title: String, domain: String, hazeState: HazeSt
             .fillMaxWidth()
             .bounceClick { } 
             .clip(RoundedCornerShape(20.dp))
-            .hazeChild(state = hazeState, style = HazeMaterials.thin()) // Uses Background Engine
+            .hazeChild(state = hazeState, style = HazeMaterials.thin()) 
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
