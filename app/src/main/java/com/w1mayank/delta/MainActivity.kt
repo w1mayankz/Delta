@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,16 +20,18 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         
         setContent {
-            // This state engine watches the background pixels for the Liquid Glass
-            val hazeState = remember { HazeState() }
-            
-            Box(modifier = Modifier.fillMaxSize()) {
-                StartPageScreen(hazeState = hazeState)
+            // FIX: Added the MaterialTheme wrapper so the Bottom Sheet doesn't panic
+            MaterialTheme {
+                val hazeState = remember { HazeState() }
                 
-                DeltaBottomBar(
-                    hazeState = hazeState,
-                    modifier = Modifier.align(Alignment.BottomCenter)
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    StartPageScreen(hazeState = hazeState)
+                    
+                    DeltaBottomBar(
+                        hazeState = hazeState,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
+                }
             }
         }
     }
