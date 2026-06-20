@@ -16,7 +16,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Fixed Haze Imports
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
@@ -27,26 +26,35 @@ import com.w1mayank.delta.ui.components.bounceClick
 import com.w1mayank.delta.ui.components.CupertinoIcon
 import com.w1mayank.delta.ui.theme.InterFont
 
-// FIX: Removed the missing CustomizeMenu import and updated the OptIn
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeApi::class)
 @Composable
-fun StartPageScreen(hazeState: HazeState) {
+fun StartPageScreen(backgroundHazeState: HazeState, contentHazeState: HazeState) {
     val textColor = Color(0xFF1A1A1A)
     val bgColor = Color(0xFFE8AAB0) 
     
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize().background(bgColor)) {
+    Box(modifier = Modifier.fillMaxSize()) {
         
+        // --- LAYER 1: THE WALLPAPER ---
+        // This generates the pixels for the inner cards to blur
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .haze(state = backgroundHazeState)
+                .background(bgColor) // Later, you can swap this for an Image() component!
+        )
+        
+        // --- LAYER 2: THE SCROLLING CONTENT ---
+        // This generates the pixels for the top/bottom fades and Nav Bar to blur
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .haze(state = hazeState),
+                .haze(state = contentHazeState),
             contentPadding = PaddingValues(top = 100.dp, bottom = 180.dp, start = 20.dp, end = 20.dp),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            // Favorites Section
             item {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -65,7 +73,7 @@ fun StartPageScreen(hazeState: HazeState) {
                                         .size(70.dp)
                                         .bounceClick { } 
                                         .clip(RoundedCornerShape(16.dp))
-                                        .hazeChild(state = hazeState, style = HazeMaterials.thin()),
+                                        .hazeChild(state = backgroundHazeState, style = HazeMaterials.thin()), // Uses Background Engine
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(letters[i], fontFamily = InterFont, fontSize = 32.sp, fontWeight = FontWeight.Normal, color = Color.White)
@@ -78,7 +86,6 @@ fun StartPageScreen(hazeState: HazeState) {
                 }
             }
 
-            // Privacy Report
             item {
                 Column {
                     Text("Privacy Report", fontFamily = InterFont, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = textColor)
@@ -88,7 +95,7 @@ fun StartPageScreen(hazeState: HazeState) {
                             .fillMaxWidth()
                             .bounceClick { }
                             .clip(RoundedCornerShape(20.dp))
-                            .hazeChild(state = hazeState, style = HazeMaterials.thin())
+                            .hazeChild(state = backgroundHazeState, style = HazeMaterials.thin()) // Uses Background Engine
                             .padding(16.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -108,19 +115,17 @@ fun StartPageScreen(hazeState: HazeState) {
                 }
             }
 
-            // Reading List
             item {
                 Column {
                     Text("Reading List", fontFamily = InterFont, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = textColor)
                     Spacer(modifier = Modifier.height(16.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        ArticleCard("P", "Physicists Reveal a Quantum Geometry...", "quantamagazine.org", hazeState)
-                        ArticleCard("I", "India Trip - Group Travel | Atlas...", "atlasobscura.com", hazeState)
+                        ArticleCard("P", "Physicists Reveal a Quantum Geometry...", "quantamagazine.org", backgroundHazeState)
+                        ArticleCard("I", "India Trip - Group Travel | Atlas...", "atlasobscura.com", backgroundHazeState)
                     }
                 }
             }
 
-            // Edit Button
             item {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Box(
@@ -136,12 +141,14 @@ fun StartPageScreen(hazeState: HazeState) {
             }
         }
 
+        // --- LAYER 3: OVERLAYS ---
+        // Uses Content Engine to blur the scrolling cards underneath
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .align(Alignment.TopCenter)
-                .hazeChild(state = hazeState, style = HazeMaterials.regular())
+                .hazeChild(state = contentHazeState, style = HazeMaterials.regular())
                 .background(Brush.verticalGradient(listOf(bgColor, bgColor.copy(alpha = 0.8f), Color.Transparent)))
         )
 
@@ -150,11 +157,10 @@ fun StartPageScreen(hazeState: HazeState) {
                 .fillMaxWidth()
                 .height(180.dp)
                 .align(Alignment.BottomCenter)
-                .hazeChild(state = hazeState, style = HazeMaterials.regular())
+                .hazeChild(state = contentHazeState, style = HazeMaterials.regular())
                 .background(Brush.verticalGradient(listOf(Color.Transparent, bgColor.copy(alpha = 0.8f), bgColor)))
         )
 
-        // FIX: Temporary placeholder block until we actually build the Customize Menu file
         if (showBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = { showBottomSheet = false },
@@ -179,7 +185,7 @@ fun ArticleCard(letter: String, title: String, domain: String, hazeState: HazeSt
             .fillMaxWidth()
             .bounceClick { } 
             .clip(RoundedCornerShape(20.dp))
-            .hazeChild(state = hazeState, style = HazeMaterials.thin())
+            .hazeChild(state = hazeState, style = HazeMaterials.thin()) // Uses Background Engine
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
