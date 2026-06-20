@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Fixed Haze Imports
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.materials.HazeMaterials
@@ -31,12 +30,10 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            // FIX: Spelled out all 4 sides so the compiler doesn't panic
             .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 44.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Back Circle
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -49,7 +46,6 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
             CupertinoIcon(hexCode = "\uF3D2", contentDescription = "Back", tint = iconColor)
         }
 
-        // Search Squircle
         Row(
             modifier = Modifier
                 .weight(1f)
@@ -78,7 +74,6 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
             CupertinoIcon(hexCode = "\uF3B0", contentDescription = "Mic", tint = iconColor, size = 20.sp)
         }
 
-        // Menu Circle
         Box(
             modifier = Modifier
                 .size(48.dp)
