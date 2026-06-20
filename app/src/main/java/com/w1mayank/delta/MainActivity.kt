@@ -6,26 +6,27 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dev.chrisbanes.haze.HazeState
 import com.w1mayank.delta.ui.components.DeltaBottomBar
 import com.w1mayank.delta.ui.screens.StartPageScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // Tells Android to draw behind the system navigation/status bars for that edge-to-edge iOS look
         enableEdgeToEdge()
         
         setContent {
+            // This state engine watches the background pixels for the Liquid Glass
+            val hazeState = remember { HazeState() }
+            
             Box(modifier = Modifier.fillMaxSize()) {
+                StartPageScreen(hazeState = hazeState)
                 
-                // The underlying scrollable webpage / Start Page
-                StartPageScreen()
-                
-                // The Liquid Glass navigation bar floating on top
                 DeltaBottomBar(
+                    hazeState = hazeState,
                     modifier = Modifier.align(Alignment.BottomCenter)
                 )
             }
