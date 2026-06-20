@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -24,16 +25,19 @@ import com.w1mayank.delta.ui.components.bounceClick
 fun StartPageScreen() {
     val liquidGlass = Color.White.copy(alpha = 0.65f)
     val textColor = Color(0xFF1A1A1A)
+    val bgColor = Color(0xFFE8AAB0) // The soft pink from your screenshot
     
-    // Background color matching the screenshot
-    Box(modifier = Modifier.fillMaxSize().background(Color(0xFFE8AAB0))) {
+    // Main Container
+    Box(modifier = Modifier.fillMaxSize().background(bgColor)) {
         
+        // 1. The Scrollable Content
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(top = 60.dp, bottom = 120.dp, start = 20.dp, end = 20.dp),
+            // Pushed top padding down so content doesn't get stuck under the status bar
+            contentPadding = PaddingValues(top = 80.dp, bottom = 140.dp, start = 20.dp, end = 20.dp),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            // 1. Favorites Section
+            // Favorites Section
             item {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -61,7 +65,7 @@ fun StartPageScreen() {
                 }
             }
 
-            // 2. Privacy Report
+            // Privacy Report
             item {
                 Column {
                     Text("Privacy Report", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = textColor)
@@ -75,7 +79,7 @@ fun StartPageScreen() {
                             Text("135", fontSize = 24.sp, fontWeight = FontWeight.Medium, color = textColor)
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(
-                                "No trackers have been banned recently.",
+                                "In the last seven days, Delta has prevented 135 trackers from profiling you.",
                                 fontSize = 14.sp,
                                 color = textColor.copy(alpha = 0.8f),
                                 lineHeight = 18.sp
@@ -85,7 +89,7 @@ fun StartPageScreen() {
                 }
             }
 
-            // 3. Reading List
+            // Reading List
             item {
                 Column {
                     Text("Reading List", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = textColor)
@@ -96,8 +100,21 @@ fun StartPageScreen() {
                     }
                 }
             }
+            
+            // Recently Closed Tabs
+            item {
+                Column {
+                    Text("Recently Closed Tabs", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = textColor)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        ArticleCard("G", "GitHub: Let's build from here", "github.com", liquidGlass, textColor)
+                        ArticleCard("S", "Stack Overflow - Where Developers Learn", "stackoverflow.com", liquidGlass, textColor)
+                        ArticleCard("Y", "YouTube", "youtube.com", liquidGlass, textColor)
+                    }
+                }
+            }
 
-            // 4. Edit Button Pill
+            // Edit Button Pill
             item {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Box(
@@ -112,6 +129,40 @@ fun StartPageScreen() {
                 }
             }
         }
+
+        // 2. The Top Blur Fade (Sits over the scrollable content, behind the status bar)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp) 
+                .align(Alignment.TopCenter)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            bgColor, // Solid pink at the absolute top
+                            bgColor.copy(alpha = 0.8f),
+                            Color.Transparent // Fades out cleanly
+                        )
+                    )
+                )
+        )
+
+        // 3. The Bottom Blur Fade (Sits over the scrollable content, behind the liquid glass nav)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(160.dp) // Stretches up just past the search pill
+                .align(Alignment.BottomCenter)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent, // Fades in cleanly
+                            bgColor.copy(alpha = 0.8f),
+                            bgColor // Solid pink at the absolute bottom
+                        )
+                    )
+                )
+        )
     }
 }
 
