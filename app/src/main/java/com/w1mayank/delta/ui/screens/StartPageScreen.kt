@@ -15,16 +15,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import compose.icons.FeatherIcons
-import compose.icons.feathericons.User
-import compose.icons.feathericons.Shield
+
+// Haze Liquid Glass Imports
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterials
 import dev.chrisbanes.haze.materials.HazeMaterials
+
+// Your Custom UI Components
 import com.w1mayank.delta.ui.components.bounceClick
 import com.w1mayank.delta.ui.components.CustomizeMenu
+import com.w1mayank.delta.ui.components.CupertinoIcon
 import com.w1mayank.delta.ui.theme.InterFont
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalHazeMaterials::class)
@@ -50,8 +52,8 @@ fun StartPageScreen(hazeState: HazeState) {
             item {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        // MATCHED SIZE: Forced to 24.dp to match Privacy Shield
-                        Icon(FeatherIcons.User, contentDescription = null, tint = textColor, modifier = Modifier.size(24.dp))
+                        // Cupertino Favorites Icon
+                        CupertinoIcon(hexCode = "\uF47D", contentDescription = "Favorites", tint = textColor, size = 24.sp)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Favorites", fontFamily = InterFont, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = textColor)
                     }
@@ -93,7 +95,8 @@ fun StartPageScreen(hazeState: HazeState) {
                             .padding(16.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(FeatherIcons.Shield, contentDescription = null, tint = textColor, modifier = Modifier.size(24.dp))
+                            // Cupertino Privacy Shield Icon
+                            CupertinoIcon(hexCode = "\uF4B2", contentDescription = "Privacy", tint = textColor, size = 24.sp)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text("135", fontFamily = InterFont, fontSize = 24.sp, fontWeight = FontWeight.Medium, color = textColor)
                             Spacer(modifier = Modifier.width(16.dp))
