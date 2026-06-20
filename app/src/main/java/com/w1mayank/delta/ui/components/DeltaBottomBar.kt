@@ -14,27 +14,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Haze Liquid Glass Imports
+// Fixed Haze Imports
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.ExperimentalHazeMaterials
 import dev.chrisbanes.haze.materials.HazeMaterials
+import dev.chrisbanes.haze.ExperimentalHazeApi
 
-// Your Custom Fonts & Icons
 import com.w1mayank.delta.ui.theme.InterFont
 
-@OptIn(ExperimentalHazeMaterials::class)
+@OptIn(ExperimentalHazeApi::class)
 @Composable
 fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
     val iconColor = Color(0xFF1A1A1A)
-    // The exact Apple math for thick refraction and vibrancy
     val glassStyle = HazeMaterials.thick() 
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            // Moved the entire bar up to match your screenshot
-            .padding(horizontal = 16.dp, bottom = 44.dp, top = 16.dp),
+            // FIX: Spelled out all 4 sides so the compiler doesn't panic
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 44.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -43,9 +41,9 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(48.dp)
                 .shadow(8.dp, CircleShape, spotColor = Color.Black.copy(alpha = 0.1f))
-                .bounceClick { } // Squish first
-                .clip(CircleShape) // Shape second
-                .hazeChild(state = hazeState, style = glassStyle), // Glass third
+                .bounceClick { } 
+                .clip(CircleShape) 
+                .hazeChild(state = hazeState, style = glassStyle), 
             contentAlignment = Alignment.Center
         ) {
             CupertinoIcon(hexCode = "\uF3D2", contentDescription = "Back", tint = iconColor)
@@ -55,7 +53,7 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 18.dp) // Compresses the squircle to give circles breathing room
+                .padding(horizontal = 18.dp) 
                 .height(48.dp)
                 .shadow(8.dp, RoundedCornerShape(24.dp), spotColor = Color.Black.copy(alpha = 0.1f))
                 .bounceClick { } 
