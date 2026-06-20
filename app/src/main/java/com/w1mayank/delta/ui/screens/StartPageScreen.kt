@@ -9,7 +9,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -137,11 +142,51 @@ fun StartPageScreen(backgroundHazeState: HazeState, contentHazeState: HazeState)
                 }
             }
             
-            // Invisible spacer at the bottom so you can scroll the very last item up past the Search bar
             item {
                 Spacer(modifier = Modifier.height(80.dp))
             }
         }
+
+        // --- LAYER 3: TRUE PROGRESSIVE GPU BLUR FADES ---
+        
+        // Top Fade (Fades out from Top to Bottom)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .align(Alignment.TopCenter)
+                // Instructs the GPU to mask the glass instead of painting over it
+                .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+                .drawWithContent {
+                    drawContent()
+                    drawRect(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(Color.Black, Color.Transparent)
+                        ),
+                        blendMode = BlendMode.DstIn // This physically erases the blur smoothly
+                    )
+                }
+                .hazeChild(state = contentHazeState, style = HazeMaterials.regular()) 
+        )
+
+        // Bottom Fade (Fades out from Bottom to Top)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(180.dp)
+                .align(Alignment.BottomCenter)
+                .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+                .drawWithContent {
+                    drawContent()
+                    drawRect(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.Black)
+                        ),
+                        blendMode = BlendMode.DstIn
+                    )
+                }
+                .hazeChild(state = contentHazeState, style = HazeMaterials.regular())
+        )
 
         if (showBottomSheet) {
             ModalBottomSheet(
