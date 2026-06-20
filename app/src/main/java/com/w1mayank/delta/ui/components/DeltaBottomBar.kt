@@ -34,6 +34,7 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Back Circle
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -43,9 +44,10 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
                 .hazeChild(state = hazeState, style = glassStyle), 
             contentAlignment = Alignment.Center
         ) {
-            CupertinoIcon(hexCode = "\uF3D2", contentDescription = "Back", tint = iconColor)
+            CupertinoIcon(hexCode = "\uF3D2", contentDescription = "Back", tint = iconColor, size = 28.sp)
         }
 
+        // Search Squircle
         Row(
             modifier = Modifier
                 .weight(1f)
@@ -74,6 +76,7 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
             CupertinoIcon(hexCode = "\uF3B0", contentDescription = "Mic", tint = iconColor, size = 20.sp)
         }
 
+        // Menu Circle
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -83,7 +86,7 @@ fun DeltaBottomBar(hazeState: HazeState, modifier: Modifier = Modifier) {
                 .hazeChild(state = hazeState, style = glassStyle),
             contentAlignment = Alignment.Center
         ) {
-            CupertinoIcon(hexCode = "\uF46A", contentDescription = "Menu", tint = iconColor)
+            CupertinoIcon(hexCode = "\uF46A", contentDescription = "Menu", tint = iconColor, size = 24.sp)
         }
     }
 }
